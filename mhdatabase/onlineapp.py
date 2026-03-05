@@ -162,6 +162,19 @@ def clean_coordinates(df):
 
 # ---------- Streamlit界面 ----------
 st.set_page_config(page_title="湖北历史疫灾智能查询", layout="wide")
+# ---------- 调试信息：检查文件和数据库 ----------
+st.write("当前工作目录:", os.getcwd())
+st.write("目录下文件列表:", os.listdir('.'))
+
+try:
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    tables = cursor.fetchall()
+    st.write("数据库中的表:", tables)
+    conn.close()
+except Exception as e:
+    st.error(f"数据库连接失败: {e}")
 st.title("🦠 湖北历史疫灾智能查询系统")
 st.markdown("输入自然语言问题，例如：“1808年湖北哪些县有疫灾？” 或 “清代光绪年间的疫灾记录”")
 
